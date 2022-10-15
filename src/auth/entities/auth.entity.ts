@@ -1,5 +1,6 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity()
 export class User {
 
     @PrimaryGeneratedColumn('uuid')
@@ -31,5 +32,6 @@ export class User {
         array   : true,
         default : [ 'admin' ]
     })
-    role:string[]
+    role:string[];
+    
 }
