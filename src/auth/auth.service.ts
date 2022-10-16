@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
+import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 
-import { CreateUserDto, UpdateAuthDto } from './dto/index';
 import { User } from './entities/auth.entity';
+import { CreateUserDto, UpdateAuthDto, LoginUserDto } from './dto/index';
 import { ResponseService } from 'src/common/utils/response/response.service';
 
 @Injectable()
@@ -14,13 +15,35 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository : Repository<User>,
     private readonly responseServices : ResponseService,
     private readonly dataSource       : DataSource,
+    private readonly jwtService       : JwtService
   ){ }
 
+  async login( loginUserDto: LoginUserDto ) {
+
+    const { contrasena, correo } = loginUserDto;
+
+    const user = await this.userRepository.findOne({
+      where : { correo },
+      select: { id : true, correo : true, contrasena : true },
+    });
+
+    if( !user) throw new UnauthorizedException("No se encontro este usuario");
+
+    if( !bcrypt.compareSync(contrasena, user.contrasena ) ) throw new UnauthorizedException("No se encontro este usuario");
+
+    return { ...user, token: this.getJwtoken({ id: user.id }) };
+  }
+
+  private getJwtoken( payload: any ) : string  {
+    const token = this.jwtService.sign( payload );
+    return token;
+  }
+
   /**
-   * We create a new user with the data provided by the user, we encrypt the password and save the user
+   * We create a new user with the data provided by the user, we encrypt the contrasena and save the user
    * in the database
    * @param {CreateUserDto} createUserDto - CreateUserDto
-   * @returns The user data without the password and role.
+   * @returns The user data without the contrasena and role.
    */
   async create( createUserDto : CreateUserDto ) {
 
@@ -140,6 +163,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * It removes a user from the database.
+   * @param {string} id - The id of the user to be deleted.
+   * @returns return this.responseServices.responseSucces( 200, 'Usuario eliminado', user );
+   */
   async remove( id : string ) {
 
     const user = await this.userRepository.find( {
@@ -155,7 +183,11 @@ export class AuthService {
           } 
         } 
       );
+
+    if( user.length == 0 ) return this.responseServices.responseSucces( 400, 'Usuario no encontrado', [] );
+
     await this.userRepository.remove( user );
+
     return this.responseServices.responseSucces( 200, 'Usuario eliminado', user );
   }
 }
