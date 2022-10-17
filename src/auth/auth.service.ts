@@ -12,7 +12,8 @@ import { ResponseService } from 'src/common/utils/response/response.service';
 export class AuthService {
 
   constructor(
-    @InjectRepository(User) private readonly userRepository : Repository<User>,
+    @InjectRepository(User) 
+    private readonly userRepository   : Repository<User>,
     private readonly responseServices : ResponseService,
     private readonly dataSource       : DataSource,
     private readonly jwtService       : JwtService
@@ -31,7 +32,7 @@ export class AuthService {
 
     if( !bcrypt.compareSync(contrasena, user.contrasena ) ) throw new UnauthorizedException("No se encontro este usuario");
 
-    return { ...user, token: this.getJwtoken({ id: user.id }) };
+    return this.responseServices.responseSucces( 200, 'Usuario ingresado correctamente', { token: this.getJwtoken({ id: user.id }) } );
   }
 
   private getJwtoken( payload: any ) : string  {
