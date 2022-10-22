@@ -29,7 +29,6 @@ import { ResponseService } from 'src/common/utils/response/response.service';
       imports : [ ConfigModule, ConfigModule ],
       inject  : [ ConfigService ],
       useFactory: ( configServices : ConfigService ) => {
-        // secret      : process.env.JWT_SECRET,
         return {
             secret      : configServices.get('JWT_SECRET'),
             signOptions : { expiresIn: '1h' },

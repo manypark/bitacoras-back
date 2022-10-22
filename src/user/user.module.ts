@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { UserController } from './user.controller';
 import { ResponseService } from 'src/common/utils/response/response.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers : [
@@ -18,6 +19,7 @@ import { ResponseService } from 'src/common/utils/response/response.service';
   imports     : [
     ConfigModule,
     TypeOrmModule.forFeature([ User ]),
+    AuthModule
   ]
 })
 export class UserModule {}
