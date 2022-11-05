@@ -4,8 +4,13 @@ import { UpdateHomeworkDto } from './dto/update-homework.dto';
 
 @Injectable()
 export class HomeworkService {
-  create(createHomeworkDto: CreateHomeworkDto) {
-    return 'This action adds a new homework';
+
+  constructor(
+
+  ){ }
+
+  create( createHomeworkDto : CreateHomeworkDto) {
+    return createHomeworkDto;
   }
 
   findAll() {

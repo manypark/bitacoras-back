@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Homework } from "src/homework/entities/homework.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -33,5 +34,11 @@ export class User {
         default : [ 'admin' ]
     })
     role:string[];
+
+    @OneToMany(
+        () => Homework,
+        ( homework ) => homework.usuario
+    )
+    homework:Homework;
     
 }
