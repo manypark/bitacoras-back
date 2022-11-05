@@ -31,16 +31,15 @@ export class AuthService {
 
     const { contrasena, correo } = loginUserDto;
 
-    const user = await this.userRepository.findOne({
-      where : { correo },
-      select: { id : true, correo : true, contrasena : true },
-    });
+    const user = await this.userRepository.findOne({ where : { correo } });
 
     if( !user) throw new UnauthorizedException("No se encontro este usuario");
 
-    if( !bcrypt.compareSync(contrasena, user.contrasena ) ) throw new UnauthorizedException("No se encontro este usuario");
+    if( !bcrypt.compareSync( contrasena, user.contrasena ) ) throw new UnauthorizedException("Las credenciales no coinciden");
 
-    return this.responseServices.responseSucces( 200, 'Usuario ingresado correctamente', { token: this.getJwtoken({ id: user.id }) } );
+    delete user.contrasena;
+
+    return this.responseServices.responseSucces( 200, 'Usuario ingresado correctamente', { ...user, token: this.getJwtoken({ id: user.id }) } );
   }
 
   private getJwtoken( payload: any ) : string  {
@@ -71,8 +70,7 @@ export class AuthService {
       delete user.contrasena;
 
       return this.responseServices.responseSucces( 201, 'Usuario creado correctamente', user );
-    } catch (error) {
-
+    } catch (error) {      
       throw new BadRequestException( error.detail );
     }
 
