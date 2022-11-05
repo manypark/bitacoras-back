@@ -1,4 +1,5 @@
-import { IsBoolean, IsDate, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
+import { IsBoolean, IsDate, IsOptional, IsString, IsUUID, MaxLength, MinLength } from "class-validator";
+import { User } from "src/user/entities/user.entity";
 
 export class CreateHomeworkDto {
 
@@ -19,4 +20,10 @@ export class CreateHomeworkDto {
     @IsBoolean()
     @IsOptional()
     isActive?:boolean;
+
+    @IsUUID()
+    usuario:User;
+
+    @IsUUID()
+    usuarioCreacion:string;
 }

@@ -31,10 +31,15 @@ export class Homework {
     noBitacoras?:number;
 
     @Column({
-        type    : 'text',
+        type    : 'bool',
         default : true
     })
     isActive:boolean;
+
+    @Column({
+        type    : 'uuid',
+    })
+    usuarioCreacion:string;
 
     @ManyToOne(
         () => User,
