@@ -9,8 +9,8 @@ export class Homework {
     id:string;
 
     @Column({
-        type    : 'date',
-        default : new Date(),
+        type    : 'text',
+        default : new Date().toString(),
     })
     fecha?:Date;
 

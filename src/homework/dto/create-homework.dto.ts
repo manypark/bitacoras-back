@@ -1,11 +1,11 @@
-import { IsBoolean, IsDate, IsOptional, IsString, IsUUID, MaxLength, MinLength } from "class-validator";
+import { IsBoolean, IsOptional, IsString, IsUUID, MaxLength, MinLength } from "class-validator";
 import { User } from "src/user/entities/user.entity";
 
 export class CreateHomeworkDto {
 
-    @IsDate()
+    @IsString()
     @IsOptional()
-    fecha?:Date;
+    fecha?:string;
 
     @IsString()
     @MinLength(5)
@@ -23,7 +23,4 @@ export class CreateHomeworkDto {
 
     @IsUUID()
     usuario:User;
-
-    @IsUUID()
-    usuarioCreacion:string;
 }

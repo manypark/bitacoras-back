@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, ParseUUIDPipe, Put } from '@nestjs/common';
 import { HomeworkService } from './homework.service';
 
 import { User } from 'src/user/entities/user.entity';
@@ -21,22 +21,26 @@ export class HomeworkController {
   }
 
   @Get()
+  @Auth()
   findAll() {
     return this.homeworkService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.homeworkService.findOne(+id);
+  @Auth()
+  findHomeworksByUser(@Param('id', ParseUUIDPipe ) idUser: string  ) {
+    return this.homeworkService.findHomeworksByUser( idUser );
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHomeworkDto: UpdateHomeworkDto) {
-    return this.homeworkService.update(+id, updateHomeworkDto);
+  @Put(':id')
+  @Auth()
+  update(@Param('id') idHomework: string, @Body() updateHomeworkDto: UpdateHomeworkDto) {
+    return this.homeworkService.update( idHomework, updateHomeworkDto );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.homeworkService.remove(+id);
+  @Auth()
+  remove(@Param('id') idHomework: string) {
+    return this.homeworkService.remove(idHomework);
   }
 }
