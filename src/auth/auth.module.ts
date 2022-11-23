@@ -31,7 +31,7 @@ import { ResponseService } from 'src/common/utils/response/response.service';
       useFactory: ( configServices : ConfigService ) => {
         return {
             secret      : configServices.get('JWT_SECRET'),
-            signOptions : { expiresIn: '1h' },
+            signOptions : { expiresIn: '30d' },
           }
       }
     }),

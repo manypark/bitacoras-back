@@ -1,5 +1,5 @@
-import { Homework } from "src/homework/entities/homework.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Homework } from "src/homework/entities/homework.entity";
 
 @Entity()
 export class User {

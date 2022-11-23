@@ -1,6 +1,7 @@
 
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Log } from "src/logs/entities/log.entity";
 
 @Entity()
 export class Homework {
@@ -56,5 +57,11 @@ export class Homework {
             eager : true
         }
     )
-    usuario:User
+    usuario:User;
+
+    @OneToMany(
+        () => Log,
+        ( Log ) => Log.tarea
+    )
+    log:Log;
 }
