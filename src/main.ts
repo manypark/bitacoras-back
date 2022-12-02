@@ -16,5 +16,6 @@ async function bootstrap() {
   );
 
   await app.listen(process.env.PORT || 3000 );
+  console.log('app listen in port: ', process.env.PORT, process.env.DB_HOST);
 }
 bootstrap();
