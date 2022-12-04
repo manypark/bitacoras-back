@@ -30,7 +30,8 @@ import { ResponseService } from 'src/common/utils/response/response.service';
       inject  : [ ConfigService ],
       useFactory: ( configServices : ConfigService ) => {
         return {
-            secret      : configServices.get('JWT_SECRET'),
+            // secret      : configServices.get('JWT_SECRET'),
+            secret      : 'misecretcodeparapassport20202',
             signOptions : { expiresIn: '30d' },
           }
       }
